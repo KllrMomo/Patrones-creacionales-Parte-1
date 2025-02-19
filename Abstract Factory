@@ -1,0 +1,115 @@
+using System;
+
+// Interfaz Botón
+public interface IBoton
+{
+    void Dibujar();
+}
+
+// Interfaz Checkbox
+public interface ICheckbox
+{
+    void Seleccionar();
+}
+
+// Implementación de Botón para Windows (Familia Botón)
+public class BotonWindows : IBoton
+{
+    public void Dibujar()
+    {
+        Console.WriteLine("Dibujando un botón en estilo Windows.");
+    }
+}
+
+// Implementación de Botón para Mac (Familia Botón)
+public class BotonMac : IBoton
+{
+    public void Dibujar()
+    {
+        Console.WriteLine("Dibujando un botón en estilo Mac.");
+    }
+}
+
+// Implementación de Checkbox para Windows (Familia Checkbox)
+public class CheckboxWindows : ICheckbox
+{
+    public void Seleccionar()
+    {
+        Console.WriteLine("Seleccionando un checkbox en estilo Windows.");
+    }
+}
+
+// Implementación de Checkbox para Mac (Familia Checkbox)
+public class CheckboxMac : ICheckbox
+{
+    public void Seleccionar()
+    {
+        Console.WriteLine("Seleccionando un checkbox en estilo Mac.");
+    }
+}
+
+// Interfaz Abstract Factory (Familia Fábrica)
+public interface IInterfazFactory
+{
+    IBoton CrearBoton();
+    ICheckbox CrearCheckbox();
+}
+
+// Fábrica para Windows (Familia Fábrica)
+public class WindowsFactory : IInterfazFactory
+{
+    public IBoton CrearBoton()
+    {
+        return new BotonWindows();
+    }
+
+    public ICheckbox CrearCheckbox()
+    {
+        return new CheckboxWindows();
+    }
+}
+
+// Fábrica para Mac (Familia Fábrica)
+public class MacFactory : IInterfazFactory
+{
+    public IBoton CrearBoton()
+    {
+        return new BotonMac();
+    }
+
+    public ICheckbox CrearCheckbox()
+    {
+        return new CheckboxMac();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Seleccione el sistema operativo de su preferencia(1 windows/ 2 mac):");
+        string? sistemaOperativo = Console.ReadLine()?.ToLower();
+
+        IInterfazFactory fabrica;
+
+        if (sistemaOperativo == "1")
+        {
+            fabrica = new WindowsFactory();
+        }
+        else if (sistemaOperativo == "2")
+        {
+            fabrica = new MacFactory();
+        }
+        else
+        {
+            Console.WriteLine("Sistema operativo no soportado.");
+            return;
+        }
+
+        var boton = fabrica.CrearBoton();
+        var checkbox = fabrica.CrearCheckbox();
+
+        boton.Dibujar();
+        checkbox.Seleccionar();
+    }
+}
