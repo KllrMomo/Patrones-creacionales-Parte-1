@@ -1,0 +1,75 @@
+using System;
+
+// Interfaz
+public interface ITransporte
+{
+    void Entregar();
+}
+
+// Implementaciones de Transporte (Tipos de trasporte)
+public class Camion : ITransporte //Transporte por camion
+{
+    public void Entregar()
+    {
+        Console.WriteLine("Entrega realizada por camión.");
+    }
+}
+
+public class Barco : ITransporte //Transporte por barco
+{
+    public void Entregar()
+    {
+        Console.WriteLine("Entrega realizada por barco.");
+    }
+}
+
+// Clase Logistica usando Factory Method
+public abstract class Logistica
+{
+    public abstract ITransporte CrearTransporte();
+}
+
+// Subclases que implementan el Factory Method (Subclases de Logistica) (Metodos de trasporte)
+public class LogisticaTerrestre : Logistica //Trasporte por Tierra
+{
+    public override ITransporte CrearTransporte()
+    {
+        return new Camion();
+    }
+}
+
+public class LogisticaMaritima : Logistica //Transporte por Mar
+{
+    public override ITransporte CrearTransporte()
+    {
+        return new Barco();
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Seleccione el tipo de transporte: 1 - camion , 2 -barco");
+        string? tipo = Console.ReadLine()?.ToLower();
+        
+        Logistica logistica;
+        
+        if (tipo == "1")
+        {
+            logistica = new LogisticaTerrestre();
+        }
+        else if (tipo == "2")
+        {
+            logistica = new LogisticaMaritima();
+        }
+        else
+        {
+            Console.WriteLine("La opción no es válida");
+            return;
+        }
+        
+        ITransporte transporte = logistica.CrearTransporte();
+        transporte.Entregar();
+    }
+}
